@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WillFly.Data;
 
 namespace WillFly.Migrations
 {
     [DbContext(typeof(WillFlyContext))]
-    partial class WillFlyContextModelSnapshot : ModelSnapshot
+    [Migration("20220402215944_InitialPrecoBases")]
+    partial class InitialPrecoBases
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,19 +137,17 @@ namespace WillFly.Migrations
 
             modelBuilder.Entity("WillFly.Model.PrecoBase", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ClasseId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DataInclusao")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("DestinoSigla")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("OrigemSigla")
                         .HasColumnType("nvarchar(450)");
@@ -158,7 +158,7 @@ namespace WillFly.Migrations
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("DataInclusao");
 
                     b.HasIndex("ClasseId");
 

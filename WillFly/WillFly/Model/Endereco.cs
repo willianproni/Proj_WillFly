@@ -16,11 +16,14 @@ namespace WillFly.Model
         public string Logradouro { get; set; }
         [JsonProperty("complemento")]
         public string Complemento { get; set; }
+        [JsonProperty("numero")]
         public int Numero { get; set; }
-        public  string Pais { get; set; }
+        [JsonProperty("pais")]
+        public string Pais { get; set; }
 
-        public Endereco(string localidade, string uf, string bairro, string logradouro, string complemento)
+        public Endereco(string cep, string localidade, string uf, string bairro, string logradouro, string complemento)
         {
+            Cep = cep;
             Localidade = localidade;
             Uf = uf;
             Bairro = bairro;
