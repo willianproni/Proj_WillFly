@@ -86,12 +86,18 @@ namespace WillFly.Controllers
         [HttpPost]
         public async Task<ActionResult<Voo>> PostVoo(Voo voo)
         {
-            var origem = await _context.Aeroporto.Where(o => o.Sigla == voo.Origem.Sigla).FirstOrDefaultAsync();
-            var destino = await _context.Aeroporto.Where(d => d.Sigla == voo.Destino.Sigla).FirstOrDefaultAsync();
-            var aeronave = await _context.Aeronave.Where(aeronave => aeronave.Id == voo.Aeronave.Id).FirstOrDefaultAsync();
-            voo.Aeronave = aeronave;
-            voo.Destino = destino;
-            voo.Origem = origem;
+            // var origem = await _context.Aeroporto.Where(o => o.Sigla == voo.Origem.Sigla).FirstOrDefaultAsync();
+            //var destino = await _context.Aeroporto.Where(d => d.Sigla == voo.Destino.Sigla).FirstOrDefaultAsync();
+            //var aeronave = await _context.Aeronave.Where(aeronave => aeronave.Id == voo.Aeronave.Id).FirstOrDefaultAsync();
+            //voo.Aeronave = aeronave;
+            // voo.Destino = destino;
+            //voo.Origem = origem;
+            var origem = await _context.Aeroporto.FindAsync(voo.Origem.Sigla);
+            var destino = await _context.Aeroporto.FindAsync(voo.Destino.Sigla);
+            var aeronave = await _context.Aeronave.FindAsync(voo.Aeronave.Id);
+            if (destino != null) { voo.Destino = destino; }
+            if (origem != null) { voo.Origem = destino; }
+            if (aeronave != null) { voo.Aeronave = aeronave; }
             _context.Voo.Add(voo);
             await _context.SaveChangesAsync();
 
