@@ -78,6 +78,12 @@ namespace WillFly.Controllers
         [HttpPost]
         public async Task<ActionResult<Aeroporto>> PostAeroporto(Aeroporto aeroporto)
         {
+            var endereco = await Service.CepApi.ViaCepJsonAsync(aeroporto.Endereco.Cep);
+            aeroporto.Endereco.Localidade = endereco.Localidade;
+            aeroporto.Endereco.Logradouro = endereco.Logradouro;
+            aeroporto.Endereco.Uf = endereco.Uf;
+            aeroporto.Endereco.Bairro = endereco.Bairro;
+            aeroporto.Endereco.Complemento = endereco.Complemento;
             _context.Aeroporto.Add(aeroporto);
             try
             {

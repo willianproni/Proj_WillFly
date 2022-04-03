@@ -84,7 +84,11 @@ namespace WillFly.Controllers
         {
 
             var endereco = await CepApi.ViaCepJsonAsync(passageiro.Endereco.Cep);
-            passageiro.Endereco = new Endereco(endereco.Logradouro, endereco.Uf, endereco.Localidade, endereco.Bairro, endereco.Complemento); ;
+            passageiro.Endereco.Localidade = endereco.Localidade;
+            passageiro.Endereco.Logradouro = endereco.Logradouro;
+            passageiro.Endereco.Uf = endereco.Uf;
+            passageiro.Endereco.Bairro = endereco.Bairro;
+            passageiro.Endereco.Complemento = endereco.Complemento;
             _context.Passageiro.Add(passageiro);
             try
             {
