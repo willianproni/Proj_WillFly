@@ -22,5 +22,6 @@ namespace WillFly.Data
 
         public DbSet<WillFly.Model.Voo> Voo { get; set; }
         public object Endereco { get; internal set; }
+        public DbSet<WillFly.Model.Classe> Classe { get; set; }
     }
 }

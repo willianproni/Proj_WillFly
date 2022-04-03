@@ -18,14 +18,5 @@ namespace WillFly.Model
         public string Complemento { get; set; }
         public int Numero { get; set; }
         public  string Pais { get; set; }
-
-        public Endereco(string localidade, string uf, string bairro, string logradouro, string complemento)
-        {
-            Localidade = localidade;
-            Uf = uf;
-            Bairro = bairro;
-            Logradouro = logradouro;
-            Complemento = complemento;
-        }
     }
 }
