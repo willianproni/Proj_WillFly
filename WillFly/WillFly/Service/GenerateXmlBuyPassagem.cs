@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace WillFly.Service
@@ -6,7 +7,7 @@ namespace WillFly.Service
 {
     public class GenerateXmlBuyPassagem
     {
-/*        public void Metodo()
+        public void Metodo()
         {
             string passagem = @"https://localhost:44367/api/Passageiroes";
 
@@ -16,11 +17,8 @@ namespace WillFly.Service
 
             if (listaPassageiro != null)
             {
-                var PassageiroXML = new XElement("root",
-                    from pass in listaPassageiro
-                    select new XElement("nome"
-                    );
+                
             }
-        }*/
+        }
     }
 }
