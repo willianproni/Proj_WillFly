@@ -1,23 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Threading.Tasks;
+using RoboApi.Model;
+using RoboApi.Service;
 
 namespace RoboApi
 {
-    internal class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Random aeronave = new Random();
-            string[] nomeAviao =
-            {
-                "T-25 Universal", "T-27 Tucano", "C-95 Bandeirante", "C-97 Brasília", "C-98 Caravan",
-                "C-99", "C-130 Hércules", "KC-390 Millennium", "A-29 Super Tucano", "P-95 Bandeirulha"
-            };
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("pt-BR");
+            RunAsync().Wait();
+        }
 
+        public static async Task RunAsync()
+        {
+            Console.WriteLine("Extraindo e adicionando dados...");
 
-            Console.WriteLine("Generating 10 random numbers:");
+            var pathFile = @"C:\5by5\WillFly\passageiro.json";
+            await AdicionarPassageiro(ReadFile.ExtrairDados(pathFile));
 
-            for (int ctr = 1; ctr <= 10; ctr++)
-                Console.WriteLine($"{aeronave.Next(nomeAviao.Length)}");
+            Console.WriteLine("Adicionado com sucesso");
+        }
+
+        public async static Task AdicionarPassageiro(List<Passageiro> passageiro)
+        {
+            foreach (var add in passageiro)
+                await WillFlyAddApi.CadastroPassageiro(add);
         }
     }
 }
