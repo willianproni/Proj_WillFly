@@ -25,7 +25,13 @@ namespace WillFly.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Passagem>>> GetPassagem()
         {
-            return await _context.Passagem.ToListAsync();
+            return await _context.Passagem
+                .Include(vooOrigem => vooOrigem.Compra.Voo.Origem.Endereco)
+                .Include(vooDestino => vooDestino.Compra.Voo.Destino.Endereco)
+                .Include(vooAeronave => vooAeronave.Compra.Voo.Aeronave)        
+                .Include(classe => classe.Compra.Classe)
+                .Include(passageiro => passageiro.Passageiro.Endereco)
+                .ToListAsync();
         }
 
         // GET: api/Passagems/5
@@ -78,6 +84,20 @@ namespace WillFly.Controllers
         [HttpPost]
         public async Task<ActionResult<Passagem>> PostPassagem(Passagem passagem)
         {
+            var cpfPassageiro = await _context.Passageiro.Where(p => p.Cpf == passagem.Passageiro.Cpf).FirstOrDefaultAsync();
+            var compra = await _context.PrecoBase.Where(compra => compra.Id == passagem.Compra.Id).FirstOrDefaultAsync();
+            //var compraVoo = await _context.PrecoBase.Where(compra => compra.Voo.Id == passagem.Compra.Voo.Id).FirstOrDefaultAsync();
+            //var voo = await _context.PrecoBase.Where(voo => voo.Voo == passagem.Compra.Voo).FirstOrDefaultAsync();
+            //var precoPassagem = await _context.PrecoBase.Where(valor => valor.ValorTotal == passagem.Compra.ValorTotal).FirstOrDefaultAsync();
+            //var classe = await _context.PrecoBase.Where(classe => classe.Classe.Id == passagem.Compra.Classe.Id).FirstOrDefaultAsync();
+            //passagem.Compra.Classe = classe.Classe;
+            //passagem.Compra.Voo = voo.Voo;
+            //passagem.Compra.Valor = precoPassagem.ValorTotal;
+            passagem.Compra.Voo = compra.Voo;
+            passagem.Compra.Classe = compra.Classe;
+            passagem.Compra.Valor = compra.ValorTotal;
+            passagem.Compra = compra;
+            passagem.Passageiro = cpfPassageiro;
             _context.Passagem.Add(passagem);
             await _context.SaveChangesAsync();
 
