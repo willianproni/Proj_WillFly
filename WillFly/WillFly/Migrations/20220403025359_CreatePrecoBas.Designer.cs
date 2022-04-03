@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WillFly.Data;
 
 namespace WillFly.Migrations
 {
     [DbContext(typeof(WillFlyContext))]
-    partial class WillFlyContextModelSnapshot : ModelSnapshot
+    [Migration("20220403025359_CreatePrecoBas")]
+    partial class CreatePrecoBas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,20 +168,25 @@ namespace WillFly.Migrations
                     b.Property<DateTime>("DataInclusao")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DestinoSigla")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("OrigemSigla")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<double>("PromocaoPorcentagem")
                         .HasColumnType("float");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<int?>("VooId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClasseId");
 
-                    b.HasIndex("VooId");
+                    b.HasIndex("DestinoSigla");
+
+                    b.HasIndex("OrigemSigla");
 
                     b.ToTable("PrecoBase");
                 });
@@ -250,13 +257,19 @@ namespace WillFly.Migrations
                         .WithMany()
                         .HasForeignKey("ClasseId");
 
-                    b.HasOne("WillFly.Model.Voo", "Voo")
+                    b.HasOne("WillFly.Model.Aeroporto", "Destino")
                         .WithMany()
-                        .HasForeignKey("VooId");
+                        .HasForeignKey("DestinoSigla");
+
+                    b.HasOne("WillFly.Model.Aeroporto", "Origem")
+                        .WithMany()
+                        .HasForeignKey("OrigemSigla");
 
                     b.Navigation("Classe");
 
-                    b.Navigation("Voo");
+                    b.Navigation("Destino");
+
+                    b.Navigation("Origem");
                 });
 
             modelBuilder.Entity("WillFly.Model.Voo", b =>

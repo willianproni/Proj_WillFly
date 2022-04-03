@@ -26,7 +26,6 @@ namespace WillFly.Controllers
         public async Task<ActionResult<IEnumerable<Voo>>> GetVoo()
         {
             return await _context.Voo
-                .Include(passageiro => passageiro.Passageiro.Endereco)
                 .Include(aeroporto => aeroporto.Origem.Endereco)
                 .Include(aeroporto => aeroporto.Destino.Endereco)
                 .Include(aeronave => aeronave.Aeronave)
@@ -38,7 +37,6 @@ namespace WillFly.Controllers
         public async Task<ActionResult<Voo>> GetVoo(int id)
         {
             var voo = await _context.Voo
-                .Include(passageiro => passageiro.Passageiro.Endereco)
                 .Include(origem => origem.Origem.Endereco)
                 .Include(destino => destino.Destino.Endereco)
                 .Include(aeronave => aeronave.Aeronave)
@@ -88,14 +86,12 @@ namespace WillFly.Controllers
         [HttpPost]
         public async Task<ActionResult<Voo>> PostVoo(Voo voo)
         {
-            var passageiro = await _context.Passageiro.Where(c => c.Cpf == voo.Passageiro.Cpf).FirstOrDefaultAsync();
             var origem = await _context.Aeroporto.Where(o => o.Sigla == voo.Origem.Sigla).FirstOrDefaultAsync();
-            var destino = await _context.Aeroporto.Where(d => d.Sigla == voo.Origem.Sigla).FirstOrDefaultAsync();
+            var destino = await _context.Aeroporto.Where(d => d.Sigla == voo.Destino.Sigla).FirstOrDefaultAsync();
             var aeronave = await _context.Aeronave.Where(aeronave => aeronave.Id == voo.Aeronave.Id).FirstOrDefaultAsync();
             voo.Aeronave = aeronave;
             voo.Destino = destino;
             voo.Origem = origem;
-            voo.Passageiro = passageiro;
             _context.Voo.Add(voo);
             await _context.SaveChangesAsync();
 
