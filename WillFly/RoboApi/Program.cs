@@ -12,10 +12,8 @@ namespace RoboApi
 {
     public class Program
     {
-        static readonly HttpClient postVoo = new HttpClient();
         public static void Main(string[] args)
         {
-            //CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("pt-BR");
             string opc;
             do
             {
@@ -25,21 +23,22 @@ namespace RoboApi
                 switch (opc)
                 {
                     case "1":
-                        RunAsync().Wait();
+                        RoboJson.AdicionandoInformacoesJsonNaApiVoo().Wait();
                         break;
-                    case "2":
-                        RelatorioPrecoBase.ArquivoXmlPrecoBase();
+                    case "2":                   
+                         RelatorioApi.ReadJsonApiPriceBase();
+                        //RelatorioPrecoBase.ArquivoXmlPrecoBase(); //Arquivo XML Console Aplication
+                        break;
+                    case "3":
+                        RelatorioApi.ReadJsonPassagem();
                         break;
                     default:
                         Console.WriteLine("Opção Inválida!!");
                         break;
                 }
-
             } while (opc != "0");
-            Menu();
-
-            
         }
+
         public static void Menu()
         {
             Console.WriteLine("-----------------------------------------------\n" +
@@ -50,34 +49,5 @@ namespace RoboApi
             Console.Write("Opção: ");
         }
 
-        public static async Task RunAsync()
-        {
-            Console.WriteLine("Extraindo e adicionando dados...");
-
-            string pathFile = @"C:\5by5\WillFly\voo.json";
-            var voo = ReadFile.GetDataVoo(pathFile);
-            try
-            {
-                postVoo.BaseAddress = new Uri("https://localhost:44367/");
-                postVoo.DefaultRequestHeaders.Accept.Clear();
-                postVoo.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await postVoo.GetAsync("api/Voos");
-                response.EnsureSuccessStatusCode();
-                voo.ForEach(p => postVoo.PostAsJsonAsync("api/Voos", p));
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-        }
-
-        public async static Task AdicionarPassageiro(List<Passageiro> passageiro)
-        {
-            foreach (var add in passageiro)
-                await WillFlyAddApi.CadastroPassageiro(add);
-        }
     }
 }
