@@ -9,7 +9,7 @@ namespace RoboApi.Service
 {
     internal class RelatorioPrecoBase
     {
-        public static void ArquivoXmlPrecoBase() //Criação de um relatório XML 
+        public static void ArquivoXmlPrecoBase() //Criação de um relatório XML console aplication
         {
             string pathFile = @"C:\5by5\WillFly\PrecoBases.json";
 
