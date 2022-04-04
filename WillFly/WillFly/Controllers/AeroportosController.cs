@@ -32,7 +32,9 @@ namespace WillFly.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Aeroporto>> GetAeroporto(string id)
         {
-            var aeroporto = await _context.Aeroporto.FindAsync(id);
+            var aeroporto = await _context.Aeroporto
+                .Include(endereco => endereco.Endereco)
+                .Where(endereco => endereco.Sigla == id).FirstOrDefaultAsync();
 
             if (aeroporto == null)
             {

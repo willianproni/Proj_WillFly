@@ -37,7 +37,12 @@ namespace WillFly.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PrecoBase>> GetPrecoBase(int id)
         {
-            var precoBase = await _context.PrecoBase.FindAsync(id);
+            var precoBase = await _context.PrecoBase
+                .Include(origem => origem.Voo.Origem.Endereco)
+                .Include(destino => destino.Voo.Destino.Endereco)
+                .Include(aeronave => aeronave.Voo.Aeronave)
+                .Include(classe => classe.Classe)
+                .FirstOrDefaultAsync();
 
             if (precoBase == null)
             {

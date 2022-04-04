@@ -38,7 +38,15 @@ namespace WillFly.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Passagem>> GetPassagem(int id)
         {
-            var passagem = await _context.Passagem.FindAsync(id);
+            var passagem = await _context.Passagem
+                .Include(compra => compra.Compra)
+                .Include(passageiro => passageiro.Passageiro.Endereco)
+                .Include(origem => origem.Compra.Voo.Origem.Endereco)
+                .Include(destino => destino.Compra.Voo.Destino.Endereco)
+                .Include(classe => classe.Compra.Classe)
+                .Include(aeronave => aeronave.Compra.Voo.Aeronave)
+                .Where(compra => compra.Id == id)
+                .FirstOrDefaultAsync();
 
             if (passagem == null)
             {
