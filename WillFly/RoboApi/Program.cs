@@ -30,7 +30,9 @@ namespace RoboApi
                         //RelatorioPrecoBase.ArquivoXmlPrecoBase(); //Arquivo XML Console Aplication
                         break;
                     case "3":
-                        RelatorioApi.ReadJsonPassagem();
+                        Console.Write("Digite o Mês da busca:");
+                        int mes = int.Parse(Console.ReadLine());
+                        RelatorioApi.ReadJsonPassagem(mes);
                         break;
                     default:
                         Console.WriteLine("Opção Inválida!!");
