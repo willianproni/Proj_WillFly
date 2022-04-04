@@ -40,6 +40,7 @@ namespace WillFly.Controllers
                 .Include(origem => origem.Origem.Endereco)
                 .Include(destino => destino.Destino.Endereco)
                 .Include(aeronave => aeronave.Aeronave)
+                .Where(voo => voo.Id == id)
                 .FirstOrDefaultAsync();
 
             if (voo == null)
